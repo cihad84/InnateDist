@@ -26,6 +26,11 @@ function GenerateInvoice() {
   });
 }
 
+// function addInvoice() {
+//   // add invoice to the database
+//   // track bill, item, invoice number, date,
+// }
+
 class InvoiceModal extends React.Component {
   constructor(props) {
     super(props);
@@ -38,6 +43,9 @@ class InvoiceModal extends React.Component {
             <div className="d-flex flex-row justify-content-between align-items-start bg-light w-100 p-4">
               <div className="w-100">
                 <h4 className="fw-bold my-2">{this.props.info.billFrom||'John Uberbacher'}</h4>
+                <h6 className="fw-bold text-secondary mb-1">
+                  Date: {this.props.info.currentDate||''}
+                </h6>
                 <h6 className="fw-bold text-secondary mb-1">
                   Invoice #: {this.props.info.invoiceNumber||''}
                 </h6>
@@ -62,7 +70,7 @@ class InvoiceModal extends React.Component {
                   <div>{this.props.info.billFromEmail||''}</div>
                 </Col>
                 <Col md={4}>
-                  <div className="fw-bold mt-2">Date Of Issue:</div>
+                  <div className="fw-bold mt-2">Due Date:</div>
                   <div>{this.props.info.dateOfIssue||''}</div>
                 </Col>
               </Row>
@@ -70,7 +78,7 @@ class InvoiceModal extends React.Component {
                 <thead>
                   <tr>
                     <th>QTY</th>
-                    <th>DESCRIPTION</th>
+                    <th>Item</th>
                     <th className="text-end">PRICE</th>
                     <th className="text-end">AMOUNT</th>
                   </tr>
@@ -83,7 +91,7 @@ class InvoiceModal extends React.Component {
                           {item.quantity}
                         </td>
                         <td>
-                          {item.name} - {item.description}
+                          {item.name}
                         </td>
                         <td className="text-end" style={{width: '100px'}}>{this.props.currency} {item.price}</td>
                         <td className="text-end" style={{width: '100px'}}>{this.props.currency} {item.price * item.quantity}</td>
@@ -104,14 +112,14 @@ class InvoiceModal extends React.Component {
                     <td className="fw-bold" style={{width: '100px'}}>SUBTOTAL</td>
                     <td className="text-end" style={{width: '100px'}}>{this.props.currency} {this.props.subTotal}</td>
                   </tr>
-                  {this.props.taxAmmount != 0.00 &&
+                  {this.props.taxAmmount !== 0.00 &&
                     <tr className="text-end">
                       <td></td>
                       <td className="fw-bold" style={{width: '100px'}}>TAX</td>
                       <td className="text-end" style={{width: '100px'}}>{this.props.currency} {this.props.taxAmmount}</td>
                     </tr>
                   }
-                  {this.props.discountAmmount != 0.00 &&
+                  {this.props.discountAmmount !== 0.00 &&
                     <tr className="text-end">
                       <td></td>
                       <td className="fw-bold" style={{width: '100px'}}>DISCOUNT</td>

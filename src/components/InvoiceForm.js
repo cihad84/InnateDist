@@ -21,7 +21,7 @@ class InvoiceForm extends React.Component {
       billTo: '',
       billToEmail: '',
       billToAddress: '',
-      billFrom: '',
+      billFrom: 'Innate Distribution',
       billFromEmail: '',
       billFromAddress: '',
       notes: '',
@@ -56,7 +56,7 @@ class InvoiceForm extends React.Component {
     var items = {
       id: id,
       name: '',
-      price: '1.00',
+      price: '0.00',
       description: '',
       quantity: 1
     }
@@ -68,7 +68,12 @@ class InvoiceForm extends React.Component {
     var subTotal = 0;
 
     items.map(function(items) {
-      subTotal = parseFloat(subTotal + (parseFloat(items.price).toFixed(2) * parseInt(items.quantity))).toFixed(2)
+
+      let cost = parseFloat(items.price);
+      let count = parseFloat(items.quantity);
+      let running = parseFloat((cost*count));
+
+      subTotal += running;
     });
 
     this.setState({
@@ -92,7 +97,7 @@ class InvoiceForm extends React.Component {
     var item = {
       id: evt.target.id,
       name: evt.target.name,
-      value: evt.target.value
+      value: evt.target.value,
     };
     var items = this.state.items.slice();
     var newItems = items.map(function(items) {
@@ -131,7 +136,9 @@ class InvoiceForm extends React.Component {
                 <div className="d-flex flex-column">
                   <div class="mb-2">
                     <span className="fw-bold">Current&nbsp;Date:&nbsp;</span>
-                    <span className="current-date">{new Date().toLocaleDateString()}</span>
+                    <span className="current-date" ></span><Form.Control type="date" value={this.state.currentDate} name={"currentDate"} onChange={(event) => this.editField(event)} style={{
+                      maxWidth: '125px'
+                    }} required="required"/>
                   </div>
                 </div>
                 <div className="d-flex flex-row align-items-center">
@@ -153,14 +160,14 @@ class InvoiceForm extends React.Component {
               <Col>
                 <Form.Label className="fw-bold">Bill to:</Form.Label>
                 <Form.Control placeholder={"Who is this invoice to?"} rows={3} value={this.state.billTo} type="text" name="billTo" className="my-2" onChange={(event) => this.editField(event)} autoComplete="name" required="required"/>
-                <Form.Control placeholder={"Email address"} value={this.state.billToEmail} type="email" name="billToEmail" className="my-2" onChange={(event) => this.editField(event)} autoComplete="email" required="required"/>
-                <Form.Control placeholder={"Billing address"} value={this.state.billToAddress} type="text" name="billToAddress" className="my-2" autoComplete="address" onChange={(event) => this.editField(event)} required="required"/>
+
+                <Form.Control placeholder={"Billing address"} value={this.state.billToAddress} type="text" name="billToAddress" className="my-2" autoComplete="address" onChange={(event) => this.editField(event)} />
               </Col>
               <Col>
                 <Form.Label className="fw-bold">Bill from:</Form.Label>
                 <Form.Control placeholder={"Who is this invoice from?"} rows={3} value={this.state.billFrom} type="text" name="billFrom" className="my-2" onChange={(event) => this.editField(event)} autoComplete="name" required="required"/>
-                <Form.Control placeholder={"Email address"} value={this.state.billFromEmail} type="email" name="billFromEmail" className="my-2" onChange={(event) => this.editField(event)} autoComplete="email" required="required"/>
-                <Form.Control placeholder={"Billing address"} value={this.state.billFromAddress} type="text" name="billFromAddress" className="my-2" autoComplete="address" onChange={(event) => this.editField(event)} required="required"/>
+
+                {/* <Form.Control placeholder={"Billing address"} value={this.state.billFromAddress} type="text" name="billFromAddress" className="my-2" autoComplete="address" onChange={(event) => this.editField(event)} required="required"/> */}
               </Col>
             </Row>
             <InvoiceItem onItemizedItemEdit={this.onItemizedItemEdit.bind(this)} onRowAdd={this.handleAddEvent.bind(this)} onRowDel={this.handleRowDel.bind(this)} currency={this.state.currency} items={this.state.items}/>
